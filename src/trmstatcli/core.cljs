@@ -11,7 +11,7 @@
     (.end req)
     ))
 (defn -main []
-  (println (get-url st/url println)))
+  (println (get-url st/url (comp println prn-str))))
 
 (node/enable-util-print!)
 
