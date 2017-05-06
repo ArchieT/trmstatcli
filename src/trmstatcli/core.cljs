@@ -1,18 +1,12 @@
 (ns archiet.trm.stac.cli
-  (:require [cljs.nodejs :as node]
+  (:require [cljs.nodejs :as nodejs]
             [httpurr.client :as http]
             [httpurr.client.node :refer [client]]
-            [archiet.trm.stac.core :as st]))
-(def http (node/require "http"))
-(def url (node/require "url"))
-(defn get-url [url-str callback]
-  (let [parsed-url (.parse url url-str)
-        req (.request http parsed-url callback)]
-    (.end req)
-    ))
+            [archiet.trm.stac.core :as st]
+            [promesa.core :as p :refer [await] :refer-macros [alet]]))
 (defn -main []
-  (println (get-url st/url (comp println prn-str))))
+  (alet [blah (p/await (http/get client st/url))] (println (-> blah :body str ))))
 
-(node/enable-util-print!)
+(nodejs/enable-util-print!)
 
 (set! *main-cli-fn* -main)
